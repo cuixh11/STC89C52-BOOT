@@ -1,0 +1,86 @@
+C51 COMPILER V9.02   LEDBUZZER                                                             04/12/2022 17:34:17 PAGE 1   
+
+
+C51 COMPILER V9.02, COMPILATION OF MODULE LEDBUZZER
+OBJECT MODULE PLACED IN ..\output\LedBuzzer.obj
+COMPILER INVOKED BY: D:\Keil_v4\C51\BIN\C51.EXE ..\src\LedBuzzer.c BROWSE INCDIR(..\inc) DEBUG OBJECTEXTEND PRINT(.\LedB
+                    -uzzer.lst) OBJECT(..\output\LedBuzzer.obj)
+
+line level    source
+
+   1          /*********************************************************************************** 
+   2          ;功能说明:STC89C52开机次数+数码管温度报警+1602时间
+   3          ;文件名称:LedBuzzer.c
+   4          :描    述：数码管和无源蜂鸣器的驱动模块
+   5          ;版本号：v1.0.0                                                                            
+   6          ;编译环境:Keil uVision V4.10 
+   7          ;微处理器:STC89C52
+   8          ;作    者:Cui Xinghai 
+   9          ;创建日期:2022.4.9   
+  10          ;***********************************************************************************/
+  11          
+  12          #define  _LED_BUZZER_C
+  13          #include "config.h"
+  14          #include "LedBuzzer.h"
+  15          
+  16          extern int16 temp;
+  17           struct sLedBuff ledBuff; //LED显示缓冲区，默认初值全0，正好达到上电全亮的效果
+  18          unsigned char code LedChar[] = {  //数码管显示字符转换表
+  19              0xC0, 0xF9, 0xA4, 0xB0, 0x99, 0x92, 0x82, 0xF8,
+  20              0x80, 0x90, 0x88, 0x83, 0xC6, 0xA1, 0x86, 0x8E,0xFF
+  21          };
+  22          uint8 staBuzzer = 0; //蜂鸣器状态控制，非0-鸣叫、0-关闭
+  23          
+  24          /* LED动态显示扫描，需在定时中断中调用 */
+  25          void LedScan()
+  26          {
+  27   1          static uint8 i = 0;  //LED位选索引
+  28   1          
+  29   1          if (ENLED == 0)  //LED使能时才进行动态扫描
+  30   1          {
+  31   2              P0 = 0xFF;                       //关闭所有段选位，显示消隐
+  32   2              P1 = (P1 & 0xF0) | i;            //位选索引值赋值到P1口低4位
+  33   2              P0 = *((uint8 data*)&ledBuff+i); //缓冲区中索引位置的数据送到P0口
+  34   2              if (i < (sizeof(ledBuff)-1))     //索引递增循环，遍历整个缓冲区
+  35   2                  i++;
+  36   2              else
+  37   2                  i = 0;
+  38   2          }
+  39   1      }
+  40          
+  41          /* 蜂鸣器“嘀”一声 */
+  42          void BuzzBeep()
+  43          {
+  44   1          staBuzzer = 80;                     //1000 0000
+  45   1      }
+  46          
+  47          /* 蜂鸣器发声控制，需在定时中断中调用 */
+  48          void BuzzCtrl()
+  49          {
+  50   1      
+  51   1          if (staBuzzer != 0)
+  52   1          {
+  53   2              BUZZER = ~BUZZER;  //蜂鸣器鸣叫
+  54   2              staBuzzer--;
+C51 COMPILER V9.02   LEDBUZZER                                                             04/12/2022 17:34:17 PAGE 2   
+
+  55   2          }
+  56   1          else
+  57   1          {
+  58   2              BUZZER = 1;        //蜂鸣器静音
+  59   2          }
+  60   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =     52    ----
+   CONSTANT SIZE    =     17    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =     17    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

@@ -1,0 +1,11 @@
+"..\output\STARTUP.obj",
+"..\output\main.obj",
+"..\output\Lcd1602.obj",
+"..\output\LedBuzzer.obj",
+"..\output\keyboard.obj",
+"..\output\DS1302.obj",
+"..\output\DS18B20.obj",
+"..\output\I2C.obj",
+"..\output\eeprom.obj" 
+TO "..\output\boot" 
+PRINT(".\boot.m51") RAMSIZE(256) 
