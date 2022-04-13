@@ -98,13 +98,12 @@ void GetRealTime(struct sTime *time)
     uint8 buf[8];
     
     DS1302BurstRead(buf);
-    time->year = buf[6] + 0x2000;
+    time->year = buf[6];
     time->mon  = buf[4];
     time->day  = buf[3];
     time->hour = buf[2];
     time->min  = buf[1];
     time->sec  = buf[0];
-    time->week = buf[5];
 }
 /* 设定实时时间，时间结构体格式的设定时间转换为数组并写入DS1302 */
 void SetRealTime(struct sTime *time)
@@ -113,7 +112,7 @@ void SetRealTime(struct sTime *time)
     
     buf[7] = 0;
     buf[6] = time->year;
-    buf[5] = time->week;
+    buf[5] = 0;
     buf[4] = time->mon;
     buf[3] = time->day;
     buf[2] = time->hour;
@@ -126,7 +125,7 @@ void InitDS1302()
 {
     uint8 dat;
     struct sTime code InitTime[] = {  //默认初始值：2014-01-01 12:30:00 星期3
-        0x2014,0x01,0x01, 0x12,0x30,0x00, 0x03
+        0x2014,0x01,0x01, 0x12,0x30,0x00
     };
     
     DS1302_CE = 0;  //初始化DS1302通信引脚

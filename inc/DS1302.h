@@ -19,7 +19,6 @@ struct sTime {  //日期时间结构
     uint8 hour;  //时
     uint8 min;   //分
     uint8 sec;   //秒
-    uint8 week;  //星期
 };
 
 #ifndef _DS1302_C

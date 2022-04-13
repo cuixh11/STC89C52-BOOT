@@ -146,12 +146,12 @@ void ShowHexByte(uint8 x, uint8 y, uint8 byt)
 void ShowRealTime()
 {
     struct sTime buf;
-    static struct sTime pdata bkp = {0xAA,0xAA,0xAA,0xAA,0xAA,0xAA,0xAA};
+    static struct sTime pdata bkp = {0xAA,0xAA,0xAA,0xAA,0xAA,0xAA};
 
     GetRealTime(&buf);
 	if (bkp.year != buf.year)  //年变化时刷新显示
     {
-        ShowHexByte(1, 0, buf.year);
+        ShowHexByte(3, 0, buf.year);
         bkp.year = buf.year;
     }
 	if (bkp.mon != buf.mon)  //月变化时刷新显示
@@ -166,17 +166,17 @@ void ShowRealTime()
     }
     if (bkp.hour != buf.hour)  //小时变化时刷新显示
     {
-        ShowHexByte(6, 1, buf.hour);
+        ShowHexByte(8, 1, buf.hour);
         bkp.hour = buf.hour;
     }
     if (bkp.min != buf.min)  //分钟变化时刷新显示
     {
-        ShowHexByte(9, 1, buf.min);
+        ShowHexByte(11, 1, buf.min);
         bkp.min = buf.min;
     }
     if (bkp.sec != buf.sec)  //秒变化时刷新显示
     {
-        ShowHexByte(12, 1, buf.sec);
+        ShowHexByte(14, 1, buf.sec);
         bkp.sec = buf.sec;
     }
 }
