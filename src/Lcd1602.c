@@ -77,6 +77,6 @@ void InitLcd1602()
     LcdWriteCmd(0x06);  //文字不动，地址自动+1
     LcdWriteCmd(0x01);  //清屏
 	LcdShowStr(0, 0, "_20  _1810300204");
-    LcdShowStr(0, 1, "  -     ::::::::");
+    LcdShowStr(0, 1, "  -       :  :  ");
 
 }
