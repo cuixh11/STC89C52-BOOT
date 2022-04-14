@@ -125,7 +125,7 @@ void InitDS1302()
 {
     uint8 dat;
     struct sTime code InitTime[] = {  //默认初始值：2014-01-01 12:30:00 星期3
-        0x2014,0x01,0x01, 0x12,0x30,0x00
+        0x2020,0x11,0x30, 0x23,0x55,0x59
     };
     
     DS1302_CE = 0;  //初始化DS1302通信引脚
